@@ -1,6 +1,18 @@
 # Firebase Avro parser plugin for Embulk
 
-TODO: Write short description here and build.gradle file.
+This parser plug-in supported to Firebase extracted file of *AVRO* format from Google-BigQuery.  
+Currently (2017/6), Firebase could extract only GCS(Google Cloud Storage) to JSON or AVRO format.  
+If you want to export Firebase's data, it has to need data pipelining for in the below steps.
+
+1. Link BigQuery with Firebase.  
+    - https://support.google.com/firebase/answer/6318765  
+1. Dump Firebase Data to Google Cloud Storage.  
+    - Use data pipelining with job scheduler and extract data from BigQuery.  
+    - https://support.google.com/firebase/answer/7029846  
+    
+1. Use input-gcs plugin with this parser-plugin.
+    - https://github.com/embulk/embulk-input-gcs  
+
 
 ## Overview
 
@@ -8,10 +20,7 @@ TODO: Write short description here and build.gradle file.
 * **Guess supported**: no
 
 ## Configuration
-
-- **option1**: description (integer, required)
-- **option2**: description (string, default: `"myvalue"`)
-- **option3**: description (string, default: `null`)
+- No configuration
 
 ## Example
 
@@ -20,19 +29,24 @@ in:
   type: any file input plugin type
   parser:
     type: firebase_avro
-    option1: example1
-    option2: example2
 ```
 
-(If guess supported) you don't have to write `parser:` section in the configuration file. After writing `in:` section, you can let embulk guess `parser:` section using this command:
 
 ```
 $ embulk gem install embulk-parser-firebase_avro
-$ embulk guess -g firebase_avro config.yml -o guessed.yml
 ```
 
 ## Build
 
 ```
 $ ./gradlew gem  # -t to watch change of files and rebuild continuously
+```
+
+## Developing or Testing
+
+This plug-in is written by Scala. You could use sbt.
+
+```
+$ ./sbt 
+$ ./sbt test
 ```

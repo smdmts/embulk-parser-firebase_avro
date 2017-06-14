@@ -20,7 +20,7 @@ targetCompatibility = 1.7
 
 dependencies {
     compile "org.embulk:embulk-core:0.8.22"
-    compile "org.scala-lang:scala-library:2.11.8"
+    compile "org.scala-lang:scala-library:2.11.11"
     compile group: 'com.sksamuel.avro4s', name: 'avro4s-core_2.11', version: '1.6.4'
     compile group: 'io.circe', name: 'circe-core_2.11', version: '0.8.0'
     compile group: 'io.circe', name: 'circe-generic_2.11', version: '0.8.0'

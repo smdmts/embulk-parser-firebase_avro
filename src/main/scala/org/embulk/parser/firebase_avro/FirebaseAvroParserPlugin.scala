@@ -36,13 +36,13 @@ class FirebaseAvroParserPlugin extends ParserPlugin {
       LoanPattern(new PageBuilder(Exec.getBufferAllocator, schema, output)) {
         pb =>
           while (efis.nextFile()) {
-            addRecord(efis, pb)
+            addRecords(efis, pb)
           }
           pb.finish()
       }
     }
 
-  def addRecord(is: InputStream, pb: PageBuilder): Unit =
+  def addRecords(is: InputStream, pb: PageBuilder): Unit =
     AvroInputStream.data[Root](IOUtils.toByteArray(is)).iterator().foreach {
       record =>
         Parser(record).foreach { rows =>
