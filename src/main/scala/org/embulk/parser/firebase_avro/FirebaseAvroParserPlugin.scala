@@ -46,7 +46,7 @@ class FirebaseAvroParserPlugin extends ParserPlugin {
     AvroInputStream.data[Root](IOUtils.toByteArray(is)).iterator().foreach {
       record =>
         Parser(record).foreach { rows =>
-          rows.sortBy(_.column.getIndex).foreach {
+          rows.foreach {
             case ValueHolder(c, Some(x: Int)) =>
               pb.setLong(c, x)
             case ValueHolder(c, Some(x: Long)) =>

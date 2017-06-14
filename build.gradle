@@ -26,11 +26,6 @@ dependencies {
     compile group: 'io.circe', name: 'circe-generic_2.11', version: '0.8.0'
     compile group: 'com.chuusai', name: 'shapeless_2.11', version: '2.3.2'
     provided "org.embulk:embulk-core:0.8.22"
-    testCompile 'org.scalatest:scalatest_2.11:3.0.2'
-    testRuntime 'org.scala-lang.modules:scala-xml_2.11:1.0.3'
-    testCompile 'org.scalacheck:scalacheck_2.11:1.13.4'
-    testCompile 'com.github.alexarchambault_2.11:scalacheck-shapeless_1.13:1.1.5'
-    testCompile  "org.embulk:embulk-standards:0.8.22"
 }
 
 task classpath(type: Copy, dependsOn: ["jar"]) {
@@ -66,12 +61,12 @@ task gemspec {
 Gem::Specification.new do |spec|
   spec.name          = "${project.name}"
   spec.version       = "${project.version}"
-  spec.authors       = ["masatoshi.shimada"]
+  spec.authors       = ["smdmts"]
   spec.summary       = %[Firebase Avro parser plugin for Embulk]
   spec.description   = %[Parses Firebase Avro files read by other file input plugins.]
-  spec.email         = ["masatoshi.shimada@every.tv"]
+  spec.email         = ["smdmts@gmail.com"]
   spec.licenses      = ["MIT"]
-  # TODO set this: spec.homepage      = "https://github.com/masatoshi.shimada/embulk-parser-firebase_avro"
+  spec.homepage      = "https://github.com/smdmts/embulk-parser-firebase_avro"
 
   spec.files         = `git ls-files`.split("\n") + Dir["classpath/*.jar"]
   spec.test_files    = spec.files.grep(%r"^(test|spec)/")
