@@ -14,7 +14,7 @@ object UserDimension {
           List(
             Column(
               "org.embulk.parser.firebase_avro.define.root.user_dim.user_properties",
-              new EmbulkColumn(i, "user_property", Types.JSON))),
+              new EmbulkColumn(i, "user_dim.user_property", Types.JSON))),
         Column.getGeneral[Device_Info],
         Column.getGeneral[Geo_Info],
         Column.getGeneral[App_Info],
