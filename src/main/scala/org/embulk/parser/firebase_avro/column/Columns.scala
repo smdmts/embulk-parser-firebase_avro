@@ -4,19 +4,27 @@ import org.embulk.spi.{Column => EmbulkColumn}
 
 object Columns {
   val instance = Columns()
-  val map: Map[String, EmbulkColumn] = instance.map { c =>
+  private val map: Map[String, EmbulkColumn] = instance.map { c =>
     c.fullPath -> c.embulkColumn
   }.toMap
 
+  private var cache: Map[String, EmbulkColumn] = Map.empty
+
   def find(className: String, fieldName: String): EmbulkColumn = {
-    val detect = map.flatMap {
-      case (name, column) =>
-        if (name.contains(s"$className.$fieldName")) Some(column)
-        else None
+    cache.get(s"$className.$fieldName") match {
+      case Some(v) => v
+      case None =>
+        val detect = map.flatMap {
+          case (name, column) =>
+            if (name.contains(s"$className.$fieldName")) Some(column)
+            else None
+        }
+        if (detect.size == 1) {
+          val result = detect.head
+          cache = cache ++ Map(s"$className.$fieldName" -> detect.head)
+          result
+        } else sys.error(s"could not find column. ${className + "." + fieldName}")
     }
-    if (detect.size == 1) {
-      detect.head
-    } else sys.error(s"could not find column. ${className + "." + fieldName}")
   }
 
   def apply(): List[Column] = {
