@@ -4,7 +4,7 @@ import org.embulk.spi.{Column => EmbulkColumn}
 import org.embulk.spi.`type`.Types
 
 object EventDimension {
-  def apply(index: Int): List[Column] = {
+  def apply(index: Int): Seq[Column] = {
     Columns.generate(index) {
       List(
         Column

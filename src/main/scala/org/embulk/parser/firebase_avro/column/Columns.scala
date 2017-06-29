@@ -27,20 +27,20 @@ object Columns {
     }
   }
 
-  def apply(): List[Column] = {
+  def apply(): Seq[Column] = {
     val userColumns = UserDimension(0)
     val eventColumns = EventDimension(userColumns.size)
-    userColumns ::: eventColumns
+    userColumns ++ eventColumns
   }
 
   def generate(startIndex: Int)(
-      s: Seq[((Int) => List[Column])]): List[Column] = {
+      s: Seq[((Int) => Seq[Column])]): Seq[Column] = {
     var index = startIndex
     s.foldLeft[List[Column]](Nil) {
       case (a, b) =>
         val additionalColumn = b(index)
         index = index + additionalColumn.size
-        a ::: additionalColumn
+        a ++ additionalColumn
     }
   }
 

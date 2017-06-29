@@ -9,7 +9,7 @@ object Column {
 
   import scala.reflect.runtime.universe._
 
-  def getGeneral[A](index: Int)(implicit tpe: TypeTag[A]): List[Column] = {
+  def getGeneral[A](index: Int)(implicit tpe: TypeTag[A]): Seq[Column] = {
     var counter = index
     typeOf[A].members.filter(!_.isMethod).flatMap { implicit member =>
       val column = member.typeSignature match {
