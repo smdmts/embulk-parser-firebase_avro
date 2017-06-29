@@ -29,7 +29,7 @@ object Columns {
   }
 
   def apply(): Seq[Column] = {
-    val userColumns = UserDimension(0)
+    val userColumns  = UserDimension(0)
     val eventColumns = EventDimension(userColumns.size)
     userColumns ++ eventColumns
   }

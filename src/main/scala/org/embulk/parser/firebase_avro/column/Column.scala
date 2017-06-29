@@ -42,16 +42,15 @@ object Column {
     }
   }.toList
 
-  private def factory[A](counter: Int, tpe: org.embulk.spi.`type`.Type)(
-      implicit tt: TypeTag[A],
-      symbol: Symbol): Column = {
+  private def factory[A](counter: Int, tpe: org.embulk.spi.`type`.Type)(implicit tt: TypeTag[A],
+                                                                        symbol: Symbol): Column = {
     val fullpath =
       (tt.tpe.etaExpand.toString.toLowerCase + "." + symbol.name.toString).trim
     Column(fullpath, new EmbulkColumn(counter, name, tpe))
   }
 
   def name[A](implicit tpe: TypeTag[A], symbol: Symbol): String = {
-    val fullpath = tpe.tpe.etaExpand.toString
+    val fullpath   = tpe.tpe.etaExpand.toString
     val lessLength = "org.embulk.parser.firebase_avro.define.root.".length
     (fullpath
       .substring(lessLength)
