@@ -60,7 +60,8 @@ object Parser {
       val c = Columns.find("bundle_info", _: String)
       val that = userDim.bundle_info
       Seq(
-        ValueHolder(c("bundle_sequence_id"), that.flatMap(_.bundle_sequence_id)),
+        ValueHolder(c("bundle_sequence_id"),
+                    that.flatMap(_.bundle_sequence_id)),
         ValueHolder(c("server_timestamp_offset_micros"),
                     that.flatMap(_.server_timestamp_offset_micros))
       )
@@ -86,7 +87,8 @@ object Parser {
         ValueHolder(c("device_model"), that.flatMap(_.device_model)),
         ValueHolder(c("device_time_zone_offset_seconds"),
                     that.flatMap(_.device_time_zone_offset_seconds)),
-        ValueHolder(c("limited_ad_tracking"), that.flatMap(_.limited_ad_tracking)),
+        ValueHolder(c("limited_ad_tracking"),
+                    that.flatMap(_.limited_ad_tracking)),
         ValueHolder(c("mobile_brand_name"), that.flatMap(_.mobile_brand_name)),
         ValueHolder(c("mobile_marketing_name"),
                     that.flatMap(_.mobile_marketing_name)),
@@ -116,7 +118,7 @@ object Parser {
       val c = Columns.find("ltv_info", _: String)
       val that = userDim.ltv_info
       Seq(ValueHolder(c("currency"), that.flatMap(_.currency)),
-           ValueHolder(c("revenue"), that.flatMap(_.revenue)))
+          ValueHolder(c("revenue"), that.flatMap(_.revenue)))
     }
 
     userFields ++ appInfo ++ bundleInfo ++ geoInfo ++ deviceInfo ++ trafficSource ++ ltvInfo

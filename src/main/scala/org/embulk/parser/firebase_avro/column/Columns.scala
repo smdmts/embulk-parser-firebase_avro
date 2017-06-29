@@ -23,7 +23,8 @@ object Columns {
           val result = detect.head
           cache = cache ++ Map(s"$className.$fieldName" -> detect.head)
           result
-        } else sys.error(s"could not find column. ${className + "." + fieldName}")
+        } else
+          sys.error(s"could not find column. ${className + "." + fieldName}")
     }
   }
 
@@ -33,8 +34,7 @@ object Columns {
     userColumns ++ eventColumns
   }
 
-  def generate(startIndex: Int)(
-      s: Seq[((Int) => Seq[Column])]): Seq[Column] = {
+  def generate(startIndex: Int)(s: Seq[((Int) => Seq[Column])]): Seq[Column] = {
     var index = startIndex
     s.foldLeft[List[Column]](Nil) {
       case (a, b) =>

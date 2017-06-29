@@ -18,7 +18,7 @@ object EventParmsJsonSerializer {
           .orElse(v.string_value)
       }
       for {
-        key <- p.key
+        key   <- p.key
         value <- value
       } yield map.put(key, value)
     }
