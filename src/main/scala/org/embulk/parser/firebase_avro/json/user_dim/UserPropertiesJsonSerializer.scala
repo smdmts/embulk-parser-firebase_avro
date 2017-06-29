@@ -12,7 +12,7 @@ object UserPropertiesJsonSerializer {
     val map = mutable.Map[String, Any]()
     properties.foreach { p =>
       val value: Option[Any] = for {
-        v <- p.value
+        v  <- p.value
         iv <- v.value
       } yield {
         v.set_timestamp_usec.foreach(a => map.put("set_timestamp_usec", a))
@@ -23,7 +23,7 @@ object UserPropertiesJsonSerializer {
           .orElse(iv.string_value)
       }
       for {
-        key <- p.key
+        key   <- p.key
         value <- value
       } yield map.put(key, value)
     }

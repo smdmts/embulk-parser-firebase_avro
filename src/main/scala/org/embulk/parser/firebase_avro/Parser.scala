@@ -10,18 +10,18 @@ import scala.language.reflectiveCalls
 
 object Parser {
 
-  def apply(record: Root): List[List[ValueHolder[_]]] = {
+  def apply(record: Root): Seq[Seq[ValueHolder[_]]] = {
     val userFields = userDims(
       record.user_dim.getOrElse(sys.error("could not get user")))
     if (record.event_dim.isEmpty) sys.error("empty event")
     record.event_dim.map {
-      userFields ::: eventDims(_)
+      userFields ++ eventDims(_)
     }
   }
 
   private def eventDims(eventDim: Event_Dim) = {
     val c = Columns.find("event_dim", _: String)
-    List(
+    Seq(
       ValueHolder(c("name"), eventDim.name),
       ValueHolder(c("date"), eventDim.date),
       ValueHolder(c("timestamp_micros"), eventDim.timestamp_micros),
@@ -35,7 +35,7 @@ object Parser {
   private def userDims(userDim: User_Dim) = {
     val userFields = {
       val c = Columns.find("user_dim", _: String)
-      List(
+      Seq(
         ValueHolder(c("user_id"), userDim.user_id),
         ValueHolder(c("first_open_timestamp_micros"),
                     userDim.first_open_timestamp_micros),
@@ -47,7 +47,7 @@ object Parser {
     val appInfo = {
       val c = Columns.find("app_info", _: String)
       val that = userDim.app_info
-      List(
+      Seq(
         ValueHolder(c("app_id"), that.flatMap(_.app_id)),
         ValueHolder(c("app_instance_id"), that.flatMap(_.app_instance_id)),
         ValueHolder(c("app_platform"), that.flatMap(_.app_platform)),
@@ -59,8 +59,9 @@ object Parser {
     val bundleInfo = {
       val c = Columns.find("bundle_info", _: String)
       val that = userDim.bundle_info
-      List(
-        ValueHolder(c("bundle_sequence_id"), that.flatMap(_.bundle_sequence_id)),
+      Seq(
+        ValueHolder(c("bundle_sequence_id"),
+                    that.flatMap(_.bundle_sequence_id)),
         ValueHolder(c("server_timestamp_offset_micros"),
                     that.flatMap(_.server_timestamp_offset_micros))
       )
@@ -69,7 +70,7 @@ object Parser {
     val geoInfo = {
       val c = Columns.find("geo_info", _: String)
       val that = userDim.geo_info
-      List(
+      Seq(
         ValueHolder(c("city"), that.flatMap(_.city)),
         ValueHolder(c("continent"), that.flatMap(_.continent)),
         ValueHolder(c("country"), that.flatMap(_.country)),
@@ -80,13 +81,14 @@ object Parser {
     val deviceInfo = {
       val c = Columns.find("device_info", _: String)
       val that = userDim.device_info
-      List(
+      Seq(
         ValueHolder(c("device_category"), that.flatMap(_.device_category)),
         ValueHolder(c("device_id"), that.flatMap(_.device_id)),
         ValueHolder(c("device_model"), that.flatMap(_.device_model)),
         ValueHolder(c("device_time_zone_offset_seconds"),
                     that.flatMap(_.device_time_zone_offset_seconds)),
-        ValueHolder(c("limited_ad_tracking"), that.flatMap(_.limited_ad_tracking)),
+        ValueHolder(c("limited_ad_tracking"),
+                    that.flatMap(_.limited_ad_tracking)),
         ValueHolder(c("mobile_brand_name"), that.flatMap(_.mobile_brand_name)),
         ValueHolder(c("mobile_marketing_name"),
                     that.flatMap(_.mobile_marketing_name)),
@@ -102,7 +104,7 @@ object Parser {
     val trafficSource = {
       val c = Columns.find("traffic_source", _: String)
       val that = userDim.traffic_source
-      List(
+      Seq(
         ValueHolder(c("user_acquired_campaign"),
                     that.flatMap(_.user_acquired_campaign)),
         ValueHolder(c("user_acquired_medium"),
@@ -115,10 +117,10 @@ object Parser {
     val ltvInfo = {
       val c = Columns.find("ltv_info", _: String)
       val that = userDim.ltv_info
-      List(ValueHolder(c("currency"), that.flatMap(_.currency)),
-           ValueHolder(c("revenue"), that.flatMap(_.revenue)))
+      Seq(ValueHolder(c("currency"), that.flatMap(_.currency)),
+          ValueHolder(c("revenue"), that.flatMap(_.revenue)))
     }
 
-    userFields ::: appInfo ::: bundleInfo ::: geoInfo ::: deviceInfo ::: trafficSource ::: ltvInfo
+    userFields ++ appInfo ++ bundleInfo ++ geoInfo ++ deviceInfo ++ trafficSource ++ ltvInfo
   }
 }

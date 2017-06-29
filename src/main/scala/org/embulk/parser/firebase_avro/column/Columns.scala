@@ -23,24 +23,24 @@ object Columns {
           val result = detect.head
           cache = cache ++ Map(s"$className.$fieldName" -> detect.head)
           result
-        } else sys.error(s"could not find column. ${className + "." + fieldName}")
+        } else
+          sys.error(s"could not find column. ${className + "." + fieldName}")
     }
   }
 
-  def apply(): List[Column] = {
+  def apply(): Seq[Column] = {
     val userColumns = UserDimension(0)
     val eventColumns = EventDimension(userColumns.size)
-    userColumns ::: eventColumns
+    userColumns ++ eventColumns
   }
 
-  def generate(startIndex: Int)(
-      s: Seq[((Int) => List[Column])]): List[Column] = {
+  def generate(startIndex: Int)(s: Seq[((Int) => Seq[Column])]): Seq[Column] = {
     var index = startIndex
     s.foldLeft[List[Column]](Nil) {
       case (a, b) =>
         val additionalColumn = b(index)
         index = index + additionalColumn.size
-        a ::: additionalColumn
+        a ++ additionalColumn
     }
   }
 

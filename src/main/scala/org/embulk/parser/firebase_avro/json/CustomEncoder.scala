@@ -12,7 +12,7 @@ object CustomEncoder {
             case v: Double =>
               (key, Json.fromDouble(v).getOrElse(Json.fromString(v.toString)))
             case v: Long => (key, Json.fromLong(v))
-            case _ => (key, Json.Null)
+            case _       => (key, Json.Null)
           }
         }
         Json.fromFields(jsonValues)
