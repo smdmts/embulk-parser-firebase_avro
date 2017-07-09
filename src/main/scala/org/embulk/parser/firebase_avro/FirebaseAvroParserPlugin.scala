@@ -1,11 +1,11 @@
 package org.embulk.parser.firebase_avro
 
-import java.io.InputStream
+
+import com.google.common.io.ByteStreams
 
 import scala.collection.JavaConverters._
 import com.sksamuel.avro4s.AvroInputStream
 import io.circe.Json
-import org.apache.commons.compress.utils.IOUtils
 import org.embulk.config.ConfigSource
 import org.embulk.config.TaskSource
 import org.embulk.parser.firebase_avro.column.Columns
@@ -22,6 +22,7 @@ object FirebaseAvroParserPlugin {
 }
 
 class FirebaseAvroParserPlugin extends ParserPlugin {
+  val logger = Exec.getLogger(classOf[FirebaseAvroParserPlugin])
   override def transaction(config: ConfigSource, control: ParserPlugin.Control): Unit = {
     val task = config.loadConfig(classOf[PluginTask])
     control.run(task.dump, FirebaseAvroParserPlugin.buildColumn())
@@ -31,14 +32,18 @@ class FirebaseAvroParserPlugin extends ParserPlugin {
     LoanPattern(new FileInputInputStream(input)) { efis =>
       LoanPattern(new PageBuilder(Exec.getBufferAllocator, schema, output)) { pb =>
         while (efis.nextFile()) {
-          addRecords(efis, pb)
+          convertToSeq(efis).foreach { v =>
+            addRecords(pb, v)
+          }
         }
         pb.finish()
       }
     }
 
-  def addRecords(is: InputStream, pb: PageBuilder): Unit =
-    AvroInputStream.data[Root](IOUtils.toByteArray(is)).iterator().foreach { record =>
+  def convertToSeq(is:FileInputInputStream): Seq[Root] =
+    AvroInputStream.data[Root](ByteStreams.toByteArray(is)).iterator().toSeq
+
+  def addRecords(pb: PageBuilder, record:Root): Unit =
       Parser(record).foreach { rows =>
         rows.foreach {
           case ValueHolder(c, Some(x: Int)) =>
@@ -62,5 +67,4 @@ class FirebaseAvroParserPlugin extends ParserPlugin {
         }
         pb.addRecord()
       }
-    }
 }
