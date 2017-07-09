@@ -1,6 +1,5 @@
 package org.embulk.parser.firebase_avro
 
-
 import com.google.common.io.ByteStreams
 
 import scala.collection.JavaConverters._
@@ -40,31 +39,31 @@ class FirebaseAvroParserPlugin extends ParserPlugin {
       }
     }
 
-  def convertToSeq(is:FileInputInputStream): Seq[Root] =
+  def convertToSeq(is: FileInputInputStream): Seq[Root] =
     AvroInputStream.data[Root](ByteStreams.toByteArray(is)).iterator().toSeq
 
-  def addRecords(pb: PageBuilder, record:Root): Unit =
-      Parser(record).foreach { rows =>
-        rows.foreach {
-          case ValueHolder(c, Some(x: Int)) =>
-            pb.setLong(c, x)
-          case ValueHolder(c, Some(x: Long)) =>
-            pb.setLong(c, x)
-          case ValueHolder(c, Some(x: Double)) =>
-            pb.setDouble(c, x)
-          case ValueHolder(c, Some(x: Float)) =>
-            pb.setDouble(c, x)
-          case ValueHolder(c, Some(x: Boolean)) =>
-            pb.setBoolean(c, x)
-          case ValueHolder(c, Some(x: String)) =>
-            pb.setString(c, x)
-          case ValueHolder(c, Some(x: Json)) =>
-            pb.setJson(c, new JsonParser().parse(x.noSpaces))
-          case ValueHolder(c, Some(x: Timestamp)) =>
-            pb.setTimestamp(c, x)
-          case ValueHolder(c, None) =>
-            pb.setNull(c)
-        }
-        pb.addRecord()
+  def addRecords(pb: PageBuilder, record: Root): Unit =
+    Parser(record).foreach { rows =>
+      rows.foreach {
+        case ValueHolder(c, Some(x: Int)) =>
+          pb.setLong(c, x)
+        case ValueHolder(c, Some(x: Long)) =>
+          pb.setLong(c, x)
+        case ValueHolder(c, Some(x: Double)) =>
+          pb.setDouble(c, x)
+        case ValueHolder(c, Some(x: Float)) =>
+          pb.setDouble(c, x)
+        case ValueHolder(c, Some(x: Boolean)) =>
+          pb.setBoolean(c, x)
+        case ValueHolder(c, Some(x: String)) =>
+          pb.setString(c, x)
+        case ValueHolder(c, Some(x: Json)) =>
+          pb.setJson(c, new JsonParser().parse(x.noSpaces))
+        case ValueHolder(c, Some(x: Timestamp)) =>
+          pb.setTimestamp(c, x)
+        case ValueHolder(c, None) =>
+          pb.setNull(c)
       }
+      pb.addRecord()
+    }
 }
