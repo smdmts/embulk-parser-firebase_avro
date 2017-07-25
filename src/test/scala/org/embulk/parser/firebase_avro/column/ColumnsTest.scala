@@ -8,11 +8,11 @@ class ColumnsTest extends FlatSpec with MustMatchers {
   "columuns" should "be indexing" in {
     val columns = Columns()
     val summery = columns.indices.sum
-    columns.map(_.embulkColumn).map(_.getIndex).sum should be (summery)
+    columns.map(_.embulkColumn).map(_.getIndex).sum should be(summery)
   }
 
   "columns" should "be finding" in {
-    Columns.find("user_dim" , "first_open_timestamp_micros")
+    Columns.find("user_dim", "first_open_timestamp_micros")
   }
 
 }

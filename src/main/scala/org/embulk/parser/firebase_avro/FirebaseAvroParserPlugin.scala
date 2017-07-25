@@ -1,13 +1,9 @@
 package org.embulk.parser.firebase_avro
 
-import java.io.InputStream
-import java.nio.ByteBuffer
-
 import com.google.common.io.ByteStreams
 
 import scala.collection.JavaConverters._
 import com.sksamuel.avro4s.AvroInputStream
-import com.sun.xml.internal.ws.util.ByteArrayBuffer
 import io.circe.Json
 import org.embulk.config.ConfigSource
 import org.embulk.config.TaskSource
