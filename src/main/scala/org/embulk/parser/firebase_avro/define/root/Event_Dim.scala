@@ -6,3 +6,7 @@ case class Event_Dim(date: Option[String],
                      timestamp_micros: Option[Long],
                      previous_timestamp_micros: Option[Long],
                      value_in_usd: Option[Double])
+
+object Event_Dim {
+  val empty = Event_Dim(None, None, Nil, None, None, None)
+}
