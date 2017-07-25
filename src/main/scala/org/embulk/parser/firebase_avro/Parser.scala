@@ -12,8 +12,12 @@ object Parser {
 
   def apply(record: Root): Seq[Seq[ValueHolder[_]]] = {
     val userFields = userDims(record.user_dim.getOrElse(sys.error("could not get user")))
-    record.event_dim.map {
-      userFields ++ eventDims(_)
+    if (record.event_dim.isEmpty) {
+      Nil
+    } else {
+      record.event_dim.map {
+        userFields ++ eventDims(_)
+      }
     }
   }
 
