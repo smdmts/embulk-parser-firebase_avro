@@ -32,7 +32,9 @@ class FirebaseAvroParserPlugin extends ParserPlugin {
       while (input.nextFile()) {
         val bytes = ByteStreams.toByteArray(new FileInputInputStream(input))
         AvroInputStream.data[Root](bytes).iterator().toList.foreach { record =>
-          addRecords(pb, record)
+          if (record.event_dim.nonEmpty) {
+            addRecords(pb, record)
+          }
         }
       }
       pb.finish()
