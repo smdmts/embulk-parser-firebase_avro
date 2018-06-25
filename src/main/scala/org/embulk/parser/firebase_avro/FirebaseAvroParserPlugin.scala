@@ -31,7 +31,7 @@ class FirebaseAvroParserPlugin extends ParserPlugin {
     LoanPattern(new PageBuilder(Exec.getBufferAllocator, schema, output)) { pb =>
       while (input.nextFile()) {
         val bytes = ByteStreams.toByteArray(new FileInputInputStream(input))
-        AvroInputStream.data[Root](bytes).iterator().toList.foreach { record =>
+        AvroInputStream.data[Root](bytes).iterator.foreach { record =>
           addRecords(pb, record)
         }
       }

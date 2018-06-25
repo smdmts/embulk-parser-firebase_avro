@@ -19,9 +19,9 @@ resolvers += Resolver.sonatypeRepo("releases")
 
 lazy val circeVersion = "0.8.0"
 libraryDependencies ++= Seq(
-  "com.sksamuel.avro4s"        %% "avro4s-core"                 % "1.6.4",
+  "com.sksamuel.avro4s"        %% "avro4s-core"                 % "1.8.3",
   "org.jruby"                  % "jruby-complete"               % "1.6.5",
-  "org.embulk"                 % "embulk-core"                  % "0.8.22",
+  "org.embulk"                 % "embulk-core"                  % "0.9.7",
   "com.chuusai"                %% "shapeless"                   % "2.3.2",
   "io.circe"                   %% "circe-core"                  % circeVersion,
   "io.circe"                   %% "circe-generic"               % circeVersion,
